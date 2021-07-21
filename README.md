@@ -5,12 +5,13 @@ Ce projet est une initiative personnelle dans le cadre d'une auto-formation en p
 ## Architecture
 
 > **packages**
->> * box.py *objet représentant une boite à pousser*
->> * player.py *objet représentant le joueur*
->> * map.py *objet représentant la map, la gestions des niveau et des boites*
-> * main.py *point d'entrée du jeu*
-
+>
+> > - box.py _objet représentant une boite à pousser_
+> > - player.py _objet représentant le joueur_
+> > - map.py _objet représentant la map, la gestions des niveau et des boites_
+>
+> - main.py _point d'entrée du jeu_
 
 ## TODO LIST
 
-* Gestion de la fin du jeu
+- Gestion de la fin du jeu

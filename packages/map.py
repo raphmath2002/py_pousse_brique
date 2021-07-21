@@ -8,9 +8,12 @@ class Map:
     boxStr = 'O'
 
     level = 1
+    max_level = 0
 
     started = True
     finished = False
+
+    game_status = False
 
     doneBoxes = 0
 
@@ -58,12 +61,20 @@ class Map:
     ]
 
     def init_box(self):
+
+        if not len(self.boxes_loc) == len(self.maps):
+            print('Maps an Boxes number are different')
+            return
+
         self.boxes_objects = []
         for box_loc in self.boxes_loc[self.level - 1]:
             box = Box(box_loc[1], box_loc[0], self.getMap())
             self.boxes_objects.append(box)
 
     def __init__(self):
+        self.game_status = True
+        for map in self.maps:
+            self.max_level += 1
         self.init_box()
 
     def getMap(self):
@@ -86,9 +97,7 @@ class Map:
         self.boxes_objects = newBoxes
 
         if len(self.boxes_objects) < 1 and not self.finished:
-            self.level += 1
-            self.init_box()
-            self.finish()
+            self.nextLevel()
 
         return map
 
@@ -99,5 +108,10 @@ class Map:
         return self.boxes_objects
 
     def nextLevel(self):
-        self.level += 1
-        self.init_box()
+        if not self.level + 1 > self.max_level:
+            self.level += 1
+            self.finish()
+            self.init_box()
+        else:
+            self.finish()
+            self.game_status = False

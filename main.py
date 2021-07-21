@@ -21,7 +21,7 @@ def printMap(map, cpt, mapObj):
 if __name__ == "__main__":
     map_object = Map()
 
-    while(True):
+    while(map_object.game_status):
         map = map_object.getMap()
 
         player = Player(map)
@@ -58,3 +58,5 @@ if __name__ == "__main__":
                     printMap(map, cpt, map_object)
 
             time.sleep(0.120)
+
+    print('[**] GAME OVER [**]')
