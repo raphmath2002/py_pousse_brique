@@ -5,30 +5,21 @@ import keyboard
 import time
 
 
-def printMap(map, cpt, mapObj):
-    print('\nNiveau : ' + str(mapObj.level))
-    for y in range(len(map)):
-        print(*map[y])
-    print('Coups : ' + str(cpt))
-    print('Boites sur objectif : ' + str(mapObj.doneBoxes))
-    print('_______________________')
-    print('* Rejouer (r)')
-    print('* Quitter (q)')
-
-    return map
-
-
 if __name__ == "__main__":
     map_object = Map()
+    moves_cpt = 0
+    restart_lvl_cpt = 0
+
+    print('* X -> un mur\n* . -> espace vide\n* S -> votre personnage\n* O -> une boite\n* 8 -> objectif\n\nAppuyez sur (a) pour commencer, pour vous déplacer utilisez les touches directionelles')
+
+    keyboard.wait('a')
 
     while(map_object.game_status):
         map = map_object.getMap()
 
         player = Player(map)
 
-        cpt = 0
-
-        printMap(map_object.applyMap(player), cpt, map_object)
+        map_object.applyMap(player)
 
         boxes = map_object.getBoxes()
 
@@ -36,27 +27,32 @@ if __name__ == "__main__":
 
         while (not map_object.finished):
 
-            if (keyboard.is_pressed('up')):
+            if keyboard.is_pressed('up'):
                 if player.movePlayer('t', boxes, map):
-                    cpt += 1
+                    moves_cpt += 1
                     map = map_object.applyMap(player)
-                    printMap(map, cpt, map_object)
-            elif (keyboard.is_pressed('down')):
+            elif keyboard.is_pressed('down'):
                 if player.movePlayer('b', boxes, map):
-                    cpt += 1
+                    moves_cpt += 1
                     map = map_object.applyMap(player)
-                    printMap(map, cpt, map_object)
-            elif (keyboard.is_pressed('left')):
+            elif keyboard.is_pressed('left'):
                 if player.movePlayer('l', boxes, map):
-                    cpt += 1
+                    moves_cpt += 1
                     map = map_object.applyMap(player)
-                    printMap(map, cpt, map_object)
-            elif (keyboard.is_pressed('right')):
+            elif keyboard.is_pressed('right'):
                 if player.movePlayer('r', boxes, map):
-                    cpt += 1
+                    moves_cpt += 1
                     map = map_object.applyMap(player)
-                    printMap(map, cpt, map_object)
+            if keyboard.is_pressed('r'):
+                restart_lvl_cpt += 1
+                oldLvl = map_object.level
+                map_object.playByLevel(oldLvl)
+            if keyboard.is_pressed('ctrl + r'):
+                map_object.playByLevel(1)
+            if (keyboard.is_pressed('q')):
+                map_object.endGame()
 
             time.sleep(0.120)
 
-    print('[**] GAME OVER [**]')
+    print('\n Fin du jeu, créé par p2sias\n* Total de coups : ' + str(moves_cpt) +
+          '\n* Relances de niveau : '+str(restart_lvl_cpt)+'\n* Progression de votre partie : '+str(map_object.game_completion) + '%')
