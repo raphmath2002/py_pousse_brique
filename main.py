@@ -26,8 +26,6 @@ if __name__ == "__main__":
 
         map_object.finished = False
 
-        print(len(map_object.maps))
-
         while (not map_object.finished):
 
             if keyboard.is_pressed('up'):
