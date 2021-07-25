@@ -27,7 +27,7 @@ Utilisez les touches directionnelles pour vous déplacer
 
 ## Ajout de map
 
-![modèle de map JSON](https://prnt.sc/1fr8ptw)
+![modèle de map JSON](https://zupimages.net/up/21/29/8e55.png)
 
 Une map est composée :
 - D'un ordre d'affichage, de 1 à l'infini !
