@@ -15,3 +15,4 @@ Ce projet est une initiative personnelle dans le cadre d'une auto-formation en p
 ## TODO LIST
 
 - Gestion de la fin du jeu
+- Interface graphique

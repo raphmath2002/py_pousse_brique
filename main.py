@@ -1,6 +1,7 @@
 from packages.player import Player
 from packages.map import Map
 
+
 import keyboard
 import time
 
@@ -24,6 +25,8 @@ if __name__ == "__main__":
         boxes = map_object.getBoxes()
 
         map_object.finished = False
+
+        print(len(map_object.maps))
 
         while (not map_object.finished):
 
@@ -55,4 +58,4 @@ if __name__ == "__main__":
             time.sleep(0.120)
 
     print('\n Fin du jeu, créé par p2sias\n* Total de coups : ' + str(moves_cpt) +
-          '\n* Relances de niveau : '+str(restart_lvl_cpt)+'\n* Progression de votre partie : '+str(map_object.game_completion) + '%')
+          '\n* Relances de niveau : '+str(restart_lvl_cpt))

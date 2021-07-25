@@ -1,6 +1,9 @@
 from .box import Box
 import copy
 
+from os import walk
+import json
+
 
 class Map:
 
@@ -15,55 +18,59 @@ class Map:
 
     game_status = False
 
-    game_completion = 0
-
     doneBoxes = 0
 
     box_number = 0
     all_done_boxes = 0
 
-    boxes_loc = [
-        [
-            [4, 4]
-        ],
-
-        [
-            [4, 4],
-            [4, 5],
-            [3, 3]
-        ]
-    ]
+    boxes_loc = []
 
     boxes_objects = []
 
-    maps = [
-        [
-            ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', 'X', '8', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
+    maps = []
 
-        ],
+    def __init__(self):
 
-        [
-            ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-            ['X', 'X', 'X', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', 'X'],
-            ['X', 'X', '.', '.', '.', '.', '.', 'X', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '.', '.', 'X', 'X', 'X', '.', '.', '.', '.', '.', '.', 'X'],
-            ['X', '8', 'X', 'X', 'X', 'X', 'X', '.', '.', '.', '.', '.', 'X'],
-            ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
-        ]
-    ]
+        self.getMaps()
+
+        self.game_status = True
+        for map in self.maps:
+            self.max_level += 1
+        self.init_box()
+
+        for boxes in self.boxes_loc:
+            for box in boxes:
+                self.box_number += 1
+
+    def getMaps(self):
+        f = []
+
+        newMaps = []
+        newBoxes = []
+
+        orderCpt = 1
+        for (dirpath, dirnames, filenames) in walk('./maps/'):
+            f.extend(filenames)
+            break
+
+        for filePath in f:
+            with open('./maps/' + filePath) as file:
+                data = json.load(file)
+
+                while not len(newMaps) == len(data['maps']):
+                    for map in data['maps']:
+                        if map['order'] == orderCpt:
+                            orderCpt += 1
+                            newBoxes.append(map['boxes'])
+                            newMaps.append(map['map'])
+
+            for boxes in newBoxes:
+                self.boxes_loc.append(boxes)
+            for map in newMaps:
+                self.maps.append(map)      
+
+            newBoxes = []
+            newMaps = []
 
     def init_box(self):
 
@@ -77,17 +84,6 @@ class Map:
             self.boxes_objects.append(box)
 
         self.doneBoxes = 0
-
-    def __init__(self):
-
-        self.game_status = True
-        for map in self.maps:
-            self.max_level += 1
-        self.init_box()
-
-        for boxes in self.boxes_loc:
-            for box in boxes:
-                self.box_number += 1
 
     def getMap(self):
         return copy.deepcopy(self.maps[self.level-1])
@@ -134,8 +130,6 @@ class Map:
         self.finished = True
 
     def endGame(self):
-        self.game_completion = int(
-            (100 * self.all_done_boxes) / self.box_number)
         self.finish()
         self.game_status = False
 
