@@ -40,6 +40,12 @@ Une map est composée :
 > - Votre personnage est représentés par un (S)
 > - Les boites par un (O)
 
+## pré-requis
+
+'''
+pip install keyboard
+'''
+
 
 p2sias
 
